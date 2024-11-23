@@ -5,9 +5,9 @@ import random
 # 参数设置
 image_width = 500  # 图像宽度
 image_height = 500  # 图像高度
-min_radius = 10  # 圆的最小半径
-max_radius = 30  # 圆的最大半径
-target_density = 0.3  # 目标密度（30%）
+min_radius = 8  # 圆的最小半径
+max_radius = 10  # 圆的最大半径
+target_density = 0.1  # 目标密度（30%）
 
 # 创建空白图像
 image = np.zeros((image_height, image_width, 3), dtype=np.uint8)
@@ -42,9 +42,9 @@ while circle_area / total_area < target_density:
         circle_area += np.pi * radius ** 2  # 更新总面积
 
 # 显示图像
-# cv2.imshow("Random Circles", image)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
+cv2.imshow("Random Circles", image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 # 如果需要保存图像
 cv2.imwrite("particles.png", image)

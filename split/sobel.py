@@ -16,7 +16,7 @@ for contour in contours:
     area = cv2.contourArea(contour)
     if area > 100:  # 面积阈值
         x, y, w, h = cv2.boundingRect(contour)
-        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 1)
 
 # 5. 显示结果
 cv2.imshow("Rectangles", image)
