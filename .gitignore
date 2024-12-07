@@ -1,4 +1,7 @@
 myenv/
 .idea/
+data/
+**/__pycache__/
+
 *.png
 *.jpg
