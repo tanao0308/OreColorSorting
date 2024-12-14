@@ -26,11 +26,9 @@ def check_overlap(new_img, placed_images, position):
 # 随机选择图像并粘贴到背景上
 def place_images_on_black_background(folder_paths, output_path, canvas_size=(2000, 2000), num_images=5):
     # 加载所有图片
+    image_paths = []
     for i in range(num_images):
-        image_path = select_random_image(random.choice(folder_paths))
-        image_paths.append(image_path)
-    # image_paths = [select_random_image]
-    # images = select_random_image(image_paths)
+        image_paths.append(select_random_image(random.choice(folder_paths)))
     images = load_images(image_paths)
     # 设置缩放大小
     new_size = (50, 50)
@@ -64,8 +62,7 @@ def place_images_on_black_background(folder_paths, output_path, canvas_size=(200
     canvas.save(output_path)
     canvas.show()
 
-# 示例
-image_paths = ["../data/RiceImagesDataset/Arborio/Arborio (1134).jpg"]
-folder_paths = ["../data/RiceImagesDataset/Arborio", "../data/RiceImagesDataset/Basmati"]
-output_path = "output_image.jpg"
-place_images_on_black_background(folder_paths, output_path, canvas_size=(500, 500), num_images=50)
+if __name__ == "__main__":
+    folder_paths = ["../data/RiceImagesDataset/Arborio", "../data/RiceImagesDataset/Basmati"]
+    output_path = "output_image.jpg"
+    place_images_on_black_background(folder_paths, output_path, canvas_size=(500, 500), num_images=50)
