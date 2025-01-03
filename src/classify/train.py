@@ -1,47 +1,17 @@
 import warnings     
 warnings.filterwarnings('ignore')
-import pathlib                                                                      
-import numpy as np    
+import pathlib                 
 import pandas as pd
-import matplotlib.pyplot as plt                  
-import seaborn as sns  
 import os       
-import random
-import splitfolders                               
-from termcolor import colored                     
-
-from tensorflow import keras 
-import torch                  
-import torch.nn as nn          # To work with Neural Networks
-import torchvision 
-import torch.nn.functional as F
-import torch.utils.data
-
+import splitfolders
+import torch
+import torch.nn as nn
 import torchvision.transforms as transforms  
-from torchsummary import summary
 import torch.optim as optim
-from torch.utils.data import DataLoader, random_split
-from torchvision.io import read_image # For visualization
+from torch.utils.data import DataLoader
 from torchvision.datasets import ImageFolder
 
-class CNN(nn.Module):
-    def __init__(self, num_classes):
-        super(CNN, self).__init__()
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=32, kernel_size=3, padding=1)
-        self.conv2 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, padding=1)
-        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
-        self.fc1 = nn.Linear(64 * 62 * 62, 120)
-        self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, num_classes)
-    def forward(self, x):
-        x = self.pool(F.relu(self.conv1(x)))
-        x = self.pool(F.relu(self.conv2(x)))
-        x = x.view(-1, 64 * 62 * 62)
-        x = torch.flatten(x, 1)
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
-        return x
+from model import CNN
 
 def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs):
     # 保存每一轮训练时 训练数据 和 测试数据 的 loss 和 accuracy
@@ -50,14 +20,13 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
     val_losses = []
     val_accuracies = []
     for epoch in range(num_epochs):
-        model.train() 
+        model.train() # 设置模型为训练模式
         running_loss = 0.0
         correct = 0
         total = 0
-        # Training loop
         for inputs, labels in train_loader:
             inputs, labels = inputs.to(device), labels.to(device)
-            optimizer.zero_grad()               # Zero the parameter gradients
+            optimizer.zero_grad()
             # Forward pass
             outputs = model(inputs)
             loss = criterion(outputs, labels)
@@ -136,5 +105,4 @@ if __name__ == "__main__":
 
     # 进行训练
     metrics_df = train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs)
-    metrics_df
     torch.save(model.state_dict(), 'trained_model.pth')

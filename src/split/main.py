@@ -6,9 +6,13 @@ def detect_and_draw_rectangles(image_path, output_path, area_threshold=100):
     image = cv2.imread(image_path)
     if image is None:
         raise ValueError(f"无法加载图像: {image_path}")
+    # 使用 cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) 将图像转换为灰度图像。这是因为轮廓检测通常在灰度图像上进行效果更好。
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # 使用 cv2.GaussianBlur(gray, (5, 5), 0) 对灰度图像进行高斯模糊。这是为了去除图像中的噪声，使得轮廓检测更加准确。
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    # 使用 cv2.Canny(blurred, 50, 150) 执行 Canny 边缘检测，返回图像的边缘图。Canny 算法能够检测图像中的边缘，帮助找出物体的轮廓。
     edges = cv2.Canny(blurred, 50, 150)
+    # 使用 cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) 从边缘图像中提取轮廓。
     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     result = []
     for contour in contours:
